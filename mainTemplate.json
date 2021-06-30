@@ -1,0 +1,189 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "defaultValue": "westeurope",
+            "type": "String"
+        },
+        "subscriptionId": {
+            "defaultValue": "[subscription().subscriptionId]",
+            "type": "String"
+        },
+        "functionDynamics365Name": {
+            "defaultValue": "func-dotnet-dynamics365-",
+            "type": "String"
+        },        
+        "functionDynamicsStorageAccountName": {
+            "defaultValue": "stfuncdynamics365-",
+            "type": "String"
+        },
+
+        "functionHashGenerationName": {
+            "defaultValue": "func-dotnet-hashgeneration-",
+            "type": "String"
+        },
+        "functionHashGenerationStorageAccountName": {
+            "defaultValue": "stfunchashgeneration-",
+            "type": "String"
+        },
+
+        "functionNotificationsName": {
+            "defaultValue": "func-dotnet-notifications-",
+            "type": "String"
+        },
+        "functionNotificationsStorageAccountName": {
+            "defaultValue": "stfuncnotifications-",
+            "type": "String"
+        },
+
+        "functionFileMergeName": {
+            "defaultValue": "func-python-filemerge-",
+            "type": "String"
+        },
+        "functionFileMergeStorageAccountName": {
+            "defaultValue": "stfuncfilemerge-",
+            "type": "String"
+        },  
+
+        "functionProfilingName": {
+            "defaultValue": "func-python-profiling-",
+            "type": "String"
+        },
+        "functionProfilingStorageAccountName": {
+            "defaultValue": "stfuncprofiling-",
+            "type": "String"
+        },  
+
+        "functionsAlwaysOn": {
+            "defaultValue": false,
+            "type": "Bool"
+        },
+
+        "functionsUse32BitWorkerProcess": {
+            "defaultValue": false,
+            "type": "Bool"
+        },      
+
+
+        "funcHostingPlanName": {
+            "defaultValue": "plan-linux-",
+            "type": "String"
+        },
+        "hostingPlanName": {
+            "type": "String"
+        },
+        "hostingPlanSkuName": {
+            "type": "String"
+        },
+        "hostingPlanSkuTier": {
+            "type": "String"
+        },
+        "hostingPlanWorkerSize": {
+            "type": "String"
+        },
+        "hostingPlanWorkerSizeId": {
+            "type": "String"
+        },
+        "hostingPlanNumberOfWorkers": {
+            "type": "String"
+        }  
+        
+                  
+              
+    },
+    "functions": [],
+    "variables": {
+        "artifactsLocationUri":     "https://raw.githubusercontent.com/oh22is/ADF-Functions/main/",
+        "nestedTemplateUriPlanLinux":     "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.linux.deploy.json'))]",
+        "nestedTemplateUriFuncDynamics365":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.dynamics365.deploy.json'))]",
+        "nestedTemplateUriFuncProfiling":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
+        "nestedTemplateUriFuncHashGeneration":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
+        "nestedTemplateUriFuncFileMerge":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
+        "nestedTemplateUriFuncNotifications" :"[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]"
+        
+        
+    },
+    "resources": [
+        {
+            "apiVersion": "2020-06-01",
+            "name": "pid-0d687f89-584c-4ea6-a25e-436b2c363671",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_plan_linux",
+            "condition": true,        
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriPlanLinux')]"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "hostingPlanName": {
+                        "value": "[parameters('hostingPlanName')]"
+                    },
+                    "hostingPlanSkuName": {
+                        "value": "[parameters('hostingPlanSkuName')]"
+                    },
+                    "hostingPlanSkuTier": {
+                        "value": "[parameters('hostingPlanSkuTier')]"
+                    },
+                    "hostingPlanWorkerSize": {
+                        "value": "[parameters('hostingPlanWorkerSize')]"
+                    },
+                    "hostingPlanWorkerSizeId": {
+                        "value": "[parameters('hostingPlanWorkerSizeId')]"
+                    },
+                    "hostingPlanNumberOfWorkers": {
+                        "value": "[parameters('hostingPlanNumberOfWorkers')]"
+                    }                
+                }
+            }
+        },
+  
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_dynamics365",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncDynamics365')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionDynamics365Name')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionDynamicsStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    }                 
+                }
+            }
+        }                      
+    ],
+    "outputs": {}
+}

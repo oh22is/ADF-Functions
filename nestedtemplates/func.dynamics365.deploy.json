@@ -69,7 +69,6 @@
             "name": "[parameters('funcName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('funcStorageAccountName'))]"
             ],
             "kind": "functionapp,linux",
@@ -120,7 +119,7 @@
                         },
                         {
                             "name": "configServiceUrl",
-                            "value": ""
+                            "value": "FillMe"
                         }
 
                     ],
