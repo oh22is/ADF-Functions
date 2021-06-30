@@ -70,22 +70,44 @@
             "defaultValue": "plan-linux-",
             "type": "String"
         },
-        "hostingPlanName": {
-            "type": "String"
-        },
         "hostingPlanSkuName": {
+            "allowedValues": [
+                "F1",
+                "D1",
+                "B1",
+                "B2",
+                "B3",
+                "S1",
+                "S2",
+                "S3",
+                "P1",
+                "P2",
+                "P3"
+            ],            
+            "defaultValue": "P1",
             "type": "String"
         },
         "hostingPlanSkuTier": {
+            "allowedValues": [
+                "Free",
+                "Shared",
+                "Basic",
+                "Standard",
+                "Premium"
+            ],
+            "defaultValue": "Premium",
             "type": "String"
         },
         "hostingPlanWorkerSize": {
+            "defaultValue": "0",
             "type": "String"
         },
         "hostingPlanWorkerSizeId": {
+            "defaultValue": "0",
             "type": "String"
         },
         "hostingPlanNumberOfWorkers": {
+            "defaultValue": "1",
             "type": "String"
         }  
         
@@ -134,7 +156,7 @@
                         "value": "[parameters('location')]"
                     },
                     "hostingPlanName": {
-                        "value": "[parameters('hostingPlanName')]"
+                        "value": "[parameters('funcHostingPlanName')]"
                     },
                     "hostingPlanSkuName": {
                         "value": "[parameters('hostingPlanSkuName')]"

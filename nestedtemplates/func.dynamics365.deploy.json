@@ -25,7 +25,7 @@
         "funcStorageAccountName": {
             "type": "String"
         },
-        "hostingPlanName": {
+        "funcHostingPlanName": {
             "type": "String"
         },
         "appInsightsName": {
