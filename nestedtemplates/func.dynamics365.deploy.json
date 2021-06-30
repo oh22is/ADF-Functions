@@ -2,13 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "tagValues": {
-            "defaultValue": "[resourceGroup().tags]",
-            "type": "Object",
-            "metadata": {
-                "description": "The tags for the resources."
-            }
-        },
         "funcName": {
             "type": "String",
             "metadata": {
@@ -43,7 +36,6 @@
             "apiVersion": "2019-06-01",
             "name": "[parameters('funcStorageAccountName')]",
             "location": "[parameters('location')]",
-            "tags": "[parameters('tagValues')]",
             "sku": {
                 "name": "Standard_LRS"
             },
@@ -77,7 +69,7 @@
             },
             "properties": {
                 "name": "[parameters('funcName')]",
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('funcHostingPlanName'))]",
                 "clientAffinityEnabled": false,
                 "siteConfig": {
                     "appSettings": [
