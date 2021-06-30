@@ -73,29 +73,25 @@
         "hostingPlanSkuName": {
             "allowedValues": [
                 "F1",
-                "D1",
                 "B1",
-                "B2",
-                "B3",
-                "S1",
-                "S2",
-                "S3",
-                "P1",
-                "P2",
-                "P3"
+                "P1v2",
+                "P2v2",
+                "P3v2",
+                "P1V3",
+                "P2v3",
+                "P3v3"
             ],            
-            "defaultValue": "P1",
+            "defaultValue": "P1v2",
             "type": "String"
         },
         "hostingPlanSkuTier": {
             "allowedValues": [
                 "Free",
-                "Shared",
                 "Basic",
-                "Standard",
-                "Premium"
+                "PremiumV2",
+                "PremiumV3"
             ],
-            "defaultValue": "Premium",
+            "defaultValue": "PremiumV2",
             "type": "String"
         },
         "hostingPlanWorkerSize": {
