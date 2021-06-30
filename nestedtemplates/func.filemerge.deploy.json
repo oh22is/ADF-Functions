@@ -26,7 +26,7 @@
         },
         "functionsAlwaysOn": {
             "type": "bool"
-        },
+        },        
         "appInsightsName": {
             "defaultValue": "[concat('appi-',parameters('funcName'))]",
             "type": "String"
@@ -63,6 +63,7 @@
         },
         {
             "type": "Microsoft.Web/sites",
+            "condition": true,
             "apiVersion": "2020-06-01",
             "name": "[parameters('funcName')]",
             "location": "[parameters('location')]",
@@ -80,52 +81,33 @@
                 "siteConfig": {
                     "appSettings": [
                         {
-                            "name": "AzureWebJobsStorage",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('funcStorageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('funcStorageAccountName')), '2019-06-01').keys[0].value)]"
-                        },
-                        {
-                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('funcStorageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('funcStorageAccountName')), '2019-06-01').keys[0].value)]"
-                        },
-                        {
-                            "name": "WEBSITE_CONTENTSHARE",
-                            "value": "[toLower(parameters('funcName'))]"
-                        },
-                        {
                             "name": "FUNCTIONS_EXTENSION_VERSION",
                             "value": "~3"
                         },
                         {
                             "name": "FUNCTIONS_WORKER_RUNTIME",
-                            "value": "dotnet"
+                            "value": "python"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('funcStorageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('funcStorageAccountName')), '2019-06-01').keys[0].value)]"
                         },
                         {
                             "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                             "value": "[concat(reference(variables('appiResID'),variables('appiApiVersion')).InstrumentationKey)]"
-                        },
+                        },  
                         {
-                            "name": "configApplicationId",
-                            "value": "FillMe"
-                        },
-                        {
-                            "name": "configTenantId",
-                            "value": "FillMe"
-                        },
-                        {
-                            "name": "configAuthenticationKey",
-                            "value": "FillMe"
-                        },
-                        {
-                            "name": "configServiceUrl",
-                            "value": "FillMe"
+                            "name": "APPINSIGHTS_CONNECTINSTRING",
+                            "value": "[concat(reference(variables('appiResID'),variables('appiApiVersion')).ConnectionString)]"
+                        
                         }
 
                     ],
                     "use32BitWorkerProcess": "[parameters('functionsUse32BitWorkerProcess')]",
-                    "linuxFxVersion": "dotnet|3.1",
+                    "linuxFxVersion": "Python|3.8",
                     "alwaysOn": "[parameters('functionsAlwaysOn')]"
                 }
             }
-        }            
+        }          
     ]
 }

@@ -198,7 +198,13 @@
                     },
                     "funcHostingPlanName": {
                         "value": "[parameters('funcHostingPlanName')]"
-                    }                 
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
                 }
             }
         }                      
