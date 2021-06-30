@@ -6,10 +6,6 @@
             "defaultValue": "westeurope",
             "type": "String"
         },
-        "subscriptionId": {
-            "defaultValue": "[subscription().subscriptionId]",
-            "type": "String"
-        },
         "functionDynamics365Name": {
             "defaultValue": "func-dotnet-dynamics365-",
             "type": "String"
@@ -105,22 +101,19 @@
         "hostingPlanNumberOfWorkers": {
             "defaultValue": "1",
             "type": "String"
-        }  
-        
-                  
-              
+        }                    
     },
+
     "functions": [],
+
     "variables": {
-        "artifactsLocationUri":     "https://raw.githubusercontent.com/oh22is/ADF-Functions/main/",
-        "nestedTemplateUriPlanLinux":     "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.linux.deploy.json'))]",
-        "nestedTemplateUriFuncDynamics365":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.dynamics365.deploy.json'))]",
-        "nestedTemplateUriFuncProfiling":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
-        "nestedTemplateUriFuncHashGeneration":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
-        "nestedTemplateUriFuncFileMerge":    "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
-        "nestedTemplateUriFuncNotifications" :"[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]"
-        
-        
+        "artifactsLocationUri": "https://raw.githubusercontent.com/oh22is/ADF-Functions/main/",
+        "nestedTemplateUriPlanLinux":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.linux.deploy.json'))]",
+        "nestedTemplateUriFuncDynamics365":     "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.dynamics365.deploy.json'))]",
+        "nestedTemplateUriFuncProfiling":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
+        "nestedTemplateUriFuncHashGeneration":  "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
+        "nestedTemplateUriFuncFileMerge":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
+        "nestedTemplateUriFuncNotifications":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]"     
     },
     "resources": [
         {
@@ -279,7 +272,79 @@
                     }              
                 }
             }
-        }   
+        },
+
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_notifications",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncNotifications')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionNotificationsName')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionNotificationsStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
+                }
+            }
+        },
+
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_profiling",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncProfiling')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionProfilingName')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionProfilingStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
+                }
+            }
+        }              
     ],
     "outputs": {}
 }
