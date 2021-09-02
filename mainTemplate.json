@@ -87,6 +87,16 @@
             "type": "String"
         }, 
 
+        "functionTableCreateName": {
+            "defaultValue": "func-dotnet-tablecreate-",
+            "type": "String"
+        },
+        "functionTableCreateStorageAccountName": {
+            "defaultValue": "stfunctablecreate-",
+            "type": "String"
+        },
+
+
         "functionsAlwaysOn": {
             "defaultValue": false,
             "type": "Bool"
@@ -154,7 +164,8 @@
         "nestedTemplateUriFuncDeployBranchToADF":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]",
         "nestedTemplateUriFuncSynapseBuilder":          "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.synapsebuilder.deploy.json'))]",
         "nestedTemplateUriFuncSynapseBuilderUtilities": "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.synapsebuilderutilities.deploy.json'))]",
-        "nestedTemplateUriFuncExecutePipeline":         "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.executepipeline.deploy.json'))]"
+        "nestedTemplateUriFuncExecutePipeline":         "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.executepipeline.deploy.json'))]",
+        "nestedTemplateUriFuncTableCreate":             "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.tablecreate.deploy.json'))]"
     },
     "resources": [
         {
@@ -525,7 +536,42 @@
                     }              
                 }
             }
-        }                         
+        },
+                {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_tablecreate",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncTableCreate')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionTableCreateName')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionTableCreateStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
+                }
+            }
+        }                           
     ],
     "outputs": {}
 }

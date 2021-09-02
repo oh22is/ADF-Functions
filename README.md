@@ -20,10 +20,11 @@ The resources are created to be used as functions in ADF or Synapse.
 | Function App, Storage Account, Application Insights | deploy_func_synapsebuilder | deploy_plan | dotnet |
 | Function App, Storage Account, Application Insights | deploy_func_synapsebuilderutilities | deploy_plan | node  | 
 | Function App, Storage Account, Application Insights | deploy_func_executepipeline | deploy_plan |   dotnet |
+| Function App, Storage Account, Application Insights | deploy_func_tablecreate | deploy_plan |   dotnet |
 
 ## What's next?
 At this point you have the underlying resources avaiable.
 
-Time to deploy the code, create a service principal for the functions and assign the permissions 
+Time to deploy the code, create a service principal for the functions and assign the permissions.
 
 For further steps or help, please check our deployment guide.
