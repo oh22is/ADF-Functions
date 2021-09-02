@@ -17,7 +17,7 @@ The resources are created to be used as functions in ADF or Synapse.
 | Function App, Storage Account, Application Insights | deploy_func_profiling | deploy_plan_linux |   
 | Function App, Storage Account, Application Insights | deploy_func_filemerge | deploy_plan_linux |
 | Function App, Storage Account, Application Insights | deploy_func_deploybranchtoadf | deploy_plan_linux | 
-| Function App, Storage Account, Application Insights | deploy_func_ | deploy_plan_linux | 
+| Function App, Storage Account, Application Insights | deploy_func_synapsebuilder | deploy_plan_linux | 
 | Function App, Storage Account, Application Insights | deploy_func_ | deploy_plan_linux |    
 
 ## What's next?
