@@ -60,6 +60,15 @@
             "type": "String"
         },  
 
+        "functionSynapseBuilderName": {
+            "defaultValue": "func-dotnet-synapsebuilder-",
+            "type": "String"
+        },
+        "functionSynapseBuilderStorageAccountName": {
+            "defaultValue": "stfuncsynapsebuilder-",
+            "type": "String"
+        }, 
+
         "functionsAlwaysOn": {
             "defaultValue": false,
             "type": "Bool"
@@ -117,13 +126,14 @@
 
     "variables": {
         "artifactsLocationUri": "https://raw.githubusercontent.com/oh22is/ADF-Functions/main/",
-        "nestedTemplateUriPlanLinux":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.linux.deploy.json'))]",
-        "nestedTemplateUriFuncDynamics365":     "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.dynamics365.deploy.json'))]",
-        "nestedTemplateUriFuncProfiling":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
-        "nestedTemplateUriFuncHashGeneration":  "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
-        "nestedTemplateUriFuncFileMerge":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
-        "nestedTemplateUriFuncNotifications":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]",
-        "nestedTemplateUriFuncDeployBranchToADF":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]"   
+        "nestedTemplateUriPlanLinux":               "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.linux.deploy.json'))]",
+        "nestedTemplateUriFuncDynamics365":         "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.dynamics365.deploy.json'))]",
+        "nestedTemplateUriFuncProfiling":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
+        "nestedTemplateUriFuncHashGeneration":      "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
+        "nestedTemplateUriFuncFileMerge":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
+        "nestedTemplateUriFuncNotifications":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]",
+        "nestedTemplateUriFuncDeployBranchToADF":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]",
+        "nestedTemplateUriFuncSynapseBuilder":      "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]"
     },
     "resources": [
         {
@@ -389,7 +399,42 @@
                     }              
                 }
             }
-        }                     
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_synapsebuilder",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncSynapseBuilder')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionSynapseBuilderName')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionSynapseBuilderStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
+                }
+            }
+        }                           
     ],
     "outputs": {}
 }
