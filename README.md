@@ -11,14 +11,14 @@ The resources are created to be used as functions in ADF or Synapse.
 |-----------------------------------------|----------------|-----------|-----------|
 | pid-0d687f89-584c-4ea6-a25e-436b2c363671 | same like resource type | none      | none|  
 | App Service Plan                         | deploy_plan    | none      |  none |
-| Function App, Storage Account, Application Insights | deploy_func_dynamics365 | deploy_plan |  |
-| Function App, Storage Account, Application Insights | deploy_func_hashgeneration | deploy_plan |   |
-| Function App, Storage Account, Application Insights | deploy_func_notifications | deploy_plan |   |
-| Function App, Storage Account, Application Insights | deploy_func_profiling | deploy_plan |  | 
-| Function App, Storage Account, Application Insights | deploy_func_filemerge | deploy_plan | |
-| Function App, Storage Account, Application Insights | deploy_func_deploybranchtoadf | deploy_plan | | 
-| Function App, Storage Account, Application Insights | deploy_func_synapsebuilder | deploy_plan |  |
-| Function App, Storage Account, Application Insights | deploy_func_synapsebuilderutilities | deploy_plan |   | 
+| Function App, Storage Account, Application Insights | deploy_func_dynamics365 | deploy_plan | dotnet |
+| Function App, Storage Account, Application Insights | deploy_func_hashgeneration | deploy_plan | dotnet |
+| Function App, Storage Account, Application Insights | deploy_func_notifications | deploy_plan | dotnet |
+| Function App, Storage Account, Application Insights | deploy_func_profiling | deploy_plan | python | 
+| Function App, Storage Account, Application Insights | deploy_func_filemerge | deploy_plan | python |
+| Function App, Storage Account, Application Insights | deploy_func_deploybranchtoadf | deploy_plan | powershell | 
+| Function App, Storage Account, Application Insights | deploy_func_synapsebuilder | deploy_plan | dotnet |
+| Function App, Storage Account, Application Insights | deploy_func_synapsebuilderutilities | deploy_plan | node  | 
 | Function App, Storage Account, Application Insights | deploy_func_executepipeline | deploy_plan |   dotnet |
 
 ## What's next?
