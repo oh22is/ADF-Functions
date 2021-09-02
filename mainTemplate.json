@@ -78,13 +78,22 @@
             "type": "String"
         }, 
 
+        "functionExecutePipelineName": {
+            "defaultValue": "func-dotnet-executepipeline-",
+            "type": "String"
+        },
+        "functionExecutePipelineStorageAccountName": {
+            "defaultValue": "stfuncexecpipe-",
+            "type": "String"
+        }, 
+
         "functionsAlwaysOn": {
             "defaultValue": false,
             "type": "Bool"
         },
 
         "functionsUse32BitWorkerProcess": {
-            "defaultValue": true,
+            "defaultValue": false,
             "type": "Bool"
         },      
 
@@ -143,8 +152,9 @@
         "nestedTemplateUriFuncFileMerge":               "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
         "nestedTemplateUriFuncNotifications":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]",
         "nestedTemplateUriFuncDeployBranchToADF":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]",
-        "nestedTemplateUriFuncSynapseBuilder":          "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]",
-        "nestedTemplateUriFuncSynapseBuilderUtilities": "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]"
+        "nestedTemplateUriFuncSynapseBuilder":          "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.synapsebuilder.deploy.json'))]",
+        "nestedTemplateUriFuncSynapseBuilderUtilities": "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.synapsebuilderutilities.deploy.json'))]",
+        "nestedTemplateUriFuncExecutePipeline":         "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.executepipeline.deploy.json'))]"
     },
     "resources": [
         {
@@ -163,13 +173,13 @@
 
         {
             "apiVersion": "2020-06-01",
-            "name": "deploy_plan_linux",
+            "name": "deploy_plan",
             "condition": true,        
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "incremental",
                 "templateLink": {
-                        "uri": "[variables('nestedTemplateUriPlanLinux')]"
+                        "uri": "[variables('nestedTemplateUriPlanWindows')]"
                 },
                 "parameters": {
                     "location": {
@@ -200,9 +210,9 @@
         {
             "apiVersion": "2020-06-01",
             "name": "deploy_function_dynamics365",
-            "condition": true,
+            "condition": false,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -236,9 +246,9 @@
         {
             "apiVersion": "2020-06-01",
             "name": "deploy_function_filemerge",
-            "condition": true,
+            "condition": false,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -272,9 +282,9 @@
         {
             "apiVersion": "2020-06-01",
             "name": "deploy_function_hashgeneration",
-            "condition": true,
+            "condition": false,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -308,9 +318,9 @@
         {
             "apiVersion": "2020-06-01",
             "name": "deploy_function_notifications",
-            "condition": true,
+            "condition": false,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -344,9 +354,9 @@
         {
             "apiVersion": "2020-06-01",
             "name": "deploy_function_profiling",
-            "condition": true,
+            "condition": false,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -379,9 +389,9 @@
         {
             "apiVersion": "2020-06-01",
             "name": "deploy_function_deploybranchtoadf",
-            "condition": false,
+            "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -416,7 +426,7 @@
             "name": "deploy_function_synapsebuilder",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -451,7 +461,7 @@
             "name": "deploy_function_synapsebuilder_utilities",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -468,6 +478,41 @@
                     },
                     "funcStorageAccountName": {
                         "value": "[parameters('functionSynapseBuilderUtilitiesStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_executepipeline",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncExecutePipeline')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionExecutePipelineName')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionExecutePipelineStorageAccountName')]"
                     },
                     "funcHostingPlanName": {
                         "value": "[parameters('funcHostingPlanName')]"
