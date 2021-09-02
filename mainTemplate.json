@@ -153,13 +153,13 @@
 
         {
             "apiVersion": "2020-06-01",
-            "name": "deploy_plan",
+            "name": "deploy_plan_linux",
             "condition": true,        
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "incremental",
                 "templateLink": {
-                        "uri": "[variables('nestedTemplateUriPlanWindows')]"
+                        "uri": "[variables('nestedTemplateUriPlanLinux')]"
                 },
                 "parameters": {
                     "location": {
@@ -192,7 +192,7 @@
             "name": "deploy_function_dynamics365",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -228,7 +228,7 @@
             "name": "deploy_function_filemerge",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -264,7 +264,7 @@
             "name": "deploy_function_hashgeneration",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -300,7 +300,7 @@
             "name": "deploy_function_notifications",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -336,7 +336,7 @@
             "name": "deploy_function_profiling",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -371,7 +371,7 @@
             "name": "deploy_function_deploybranchtoadf",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -406,7 +406,7 @@
             "name": "deploy_function_synapsebuilder",
             "condition": true,
             "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan')]"
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
             "type": "Microsoft.Resources/deployments",
             "properties": {
