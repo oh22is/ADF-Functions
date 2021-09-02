@@ -65,7 +65,16 @@
             "type": "String"
         },
         "functionSynapseBuilderStorageAccountName": {
-            "defaultValue": "stfuncsynbuilder-",
+            "defaultValue": "stfuncsynbuild-",
+            "type": "String"
+        }, 
+
+        "functionSynapseBuilderUtilitiesName": {
+            "defaultValue": "func-node-synapsebuilder-utilities-",
+            "type": "String"
+        },
+        "functionSynapseBuilderUtilitiesStorageAccountName": {
+            "defaultValue": "stfuncsynbuildutil-",
             "type": "String"
         }, 
 
@@ -126,15 +135,16 @@
 
     "variables": {
         "artifactsLocationUri": "https://raw.githubusercontent.com/oh22is/ADF-Functions/main/",
-        "nestedTemplateUriPlanLinux":               "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.linux.deploy.json'))]",
-        "nestedTemplateUriPlanWindows":             "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.windows.deploy.json'))]",
-        "nestedTemplateUriFuncDynamics365":         "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.dynamics365.deploy.json'))]",
-        "nestedTemplateUriFuncProfiling":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
-        "nestedTemplateUriFuncHashGeneration":      "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
-        "nestedTemplateUriFuncFileMerge":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
-        "nestedTemplateUriFuncNotifications":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]",
-        "nestedTemplateUriFuncDeployBranchToADF":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]",
-        "nestedTemplateUriFuncSynapseBuilder":      "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]"
+        "nestedTemplateUriPlanLinux":                   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.linux.deploy.json'))]",
+        "nestedTemplateUriPlanWindows":                 "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/plan.windows.deploy.json'))]",
+        "nestedTemplateUriFuncDynamics365":             "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.dynamics365.deploy.json'))]",
+        "nestedTemplateUriFuncProfiling":               "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
+        "nestedTemplateUriFuncHashGeneration":          "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
+        "nestedTemplateUriFuncFileMerge":               "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
+        "nestedTemplateUriFuncNotifications":           "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]",
+        "nestedTemplateUriFuncDeployBranchToADF":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]",
+        "nestedTemplateUriFuncSynapseBuilder":          "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]",
+        "nestedTemplateUriFuncSynapseBuilderUtilities": "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]"
     },
     "resources": [
         {
@@ -369,7 +379,7 @@
         {
             "apiVersion": "2020-06-01",
             "name": "deploy_function_deploybranchtoadf",
-            "condition": true,
+            "condition": false,
             "dependsOn": [
                  "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
             ],            
@@ -435,7 +445,42 @@
                     }              
                 }
             }
-        }                           
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_synapsebuilder_utilities",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncSynapseBuilderUtilities')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionSynapseBuilderUtilitiesName')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionSynapseBuilderUtilitiesStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
+                }
+            }
+        }                         
     ],
     "outputs": {}
 }
