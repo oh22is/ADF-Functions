@@ -7,9 +7,9 @@
 
 The resources are created to be used as functions in ADF or Synapse.
 
-| ResourceName                            | DeploymentName | DependsOn |
+| ResourceType                         | DeploymentName | DependsOn |
 |-----------------------------------------|----------------|-----------|
-| pid-0d687f89-584c-4ea6-a25e-436b2c363671 | same like resource name | none      |  
+| pid-0d687f89-584c-4ea6-a25e-436b2c363671 | same like resource type | none      |  
 | App Service Plan                         | deploy_plan_linux      | none      |  
 | Function App, Storage Account, Application Insights | deploy_func_dynamics365 | deploy_plan_linux |   
 | Function App, Storage Account, Application Insights | deploy_func_hashgeneration | deploy_plan_linux |   
@@ -18,7 +18,7 @@ The resources are created to be used as functions in ADF or Synapse.
 | Function App, Storage Account, Application Insights | deploy_func_filemerge | deploy_plan_linux |
 | Function App, Storage Account, Application Insights | deploy_func_deploybranchtoadf | deploy_plan_linux | 
 | Function App, Storage Account, Application Insights | deploy_func_synapsebuilder | deploy_plan_linux | 
-| Function App, Storage Account, Application Insights | deploy_func_ | deploy_plan_linux |    
+| Function App, Storage Account, Application Insights | deploy_func_synapsebuilderutilities | deploy_plan_linux |    
 
 ## What's next?
 At this point you have the underlying resources avaiable.
