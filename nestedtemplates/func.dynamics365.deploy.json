@@ -122,7 +122,6 @@
 
                     ],
                     "use32BitWorkerProcess": "[parameters('functionsUse32BitWorkerProcess')]",
-                    "linuxFxVersion": "dotnet|3.1",
                     "alwaysOn": "[parameters('functionsAlwaysOn')]"
                 }
             }

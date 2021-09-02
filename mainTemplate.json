@@ -75,7 +75,7 @@
         },
 
         "functionsUse32BitWorkerProcess": {
-            "defaultValue": false,
+            "defaultValue": true,
             "type": "Bool"
         },      
 
