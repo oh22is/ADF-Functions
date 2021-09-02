@@ -70,7 +70,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('funcStorageAccountName'))]"
             ],
-            "kind": "functionapp,linux",
+            "kind": "functionapp",
             "identity": {
                 "type": "SystemAssigned"
             },

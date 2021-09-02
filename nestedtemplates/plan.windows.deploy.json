@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String",
+            "metadata": {
+                "description": "Specifies the Azure location where the resources should be created."
+            }
+        },
+        "hostingPlanName": {
+            "type": "String"
+        },
+        "hostingPlanSkuName": {
+            "type": "String"
+        },
+        "hostingPlanSkuTier": {
+            "type": "String"
+        },
+        "hostingPlanWorkerSize": {
+            "type": "String"
+        },
+        "hostingPlanWorkerSizeId": {
+            "type": "String"
+        },
+        "hostingPlanNumberOfWorkers": {
+            "type": "String"
+        }   
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+                {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-06-01",
+            "name": "[parameters('hostingPlanName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('hostingPlanSkuName')]",
+                "tier": "[parameters('hostingPlanSkuTier')]"
+            },
+            "kind": "windows",
+            "properties": {
+                "name": "[parameters('hostingPlanName')]",
+                "workerSize": "[parameters('hostingPlanworkerSize')]",
+                "workerSizeId": "[parameters('hostingPlanWorkerSizeId')]",
+                "numberOfWorkers": "[parameters('hostingPlanNumberOfWorkers')]",
+                "reserved": true
+            }
+        }
+    ],
+    "outputs": {}
+}
