@@ -51,6 +51,15 @@
             "type": "String"
         },  
 
+        "functionDeployBranchToADFName": {
+            "defaultValue": "func-powershell-deploybranchtoadf-",
+            "type": "String"
+        },
+        "functionDeployBranchToADFStorageAccountName": {
+            "defaultValue": "stfuncbranchtoadf-",
+            "type": "String"
+        },  
+
         "functionsAlwaysOn": {
             "defaultValue": false,
             "type": "Bool"
@@ -113,7 +122,8 @@
         "nestedTemplateUriFuncProfiling":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.profiling.deploy.json'))]",
         "nestedTemplateUriFuncHashGeneration":  "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.hashgeneration.deploy.json'))]",
         "nestedTemplateUriFuncFileMerge":       "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.filemerge.deploy.json'))]",
-        "nestedTemplateUriFuncNotifications":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]"     
+        "nestedTemplateUriFuncNotifications":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.notifications.deploy.json'))]",
+        "nestedTemplateUriFuncDeployBranchToADF":   "[uri(variables('artifactsLocationUri'), concat('nestedtemplates/func.deployBranchToADF.deploy.json'))]"   
     },
     "resources": [
         {
@@ -344,7 +354,42 @@
                     }              
                 }
             }
-        }              
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "deploy_function_deploybranchtoadf",
+            "condition": true,
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'deploy_plan_linux')]"
+            ],            
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                        "uri": "[variables('nestedTemplateUriFuncDeployBranchToADF')]"
+                },
+                "parameters": {  
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "funcName": {
+                        "value": "[parameters('functionDeployBranchToADFName')]"
+                    },
+                    "funcStorageAccountName": {
+                        "value": "[parameters('functionDeployBranchToADFStorageAccountName')]"
+                    },
+                    "funcHostingPlanName": {
+                        "value": "[parameters('funcHostingPlanName')]"
+                    },
+                    "functionsAlwaysOn": {
+                        "value": "[parameters('functionsAlwaysOn')]"
+                    },
+                    "functionsUse32BitWorkerProcess": {
+                        "value": "[parameters('functionsUse32BitWorkerProcess')]"
+                    }              
+                }
+            }
+        }                     
     ],
     "outputs": {}
 }
