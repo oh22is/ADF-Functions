@@ -40,13 +40,13 @@
                 "name": "[parameters('hostingPlanSkuName')]",
                 "tier": "[parameters('hostingPlanSkuTier')]"
             },
-            "kind": "windows",
+            "kind": "",
             "properties": {
                 "name": "[parameters('hostingPlanName')]",
                 "workerSize": "[parameters('hostingPlanworkerSize')]",
                 "workerSizeId": "[parameters('hostingPlanWorkerSizeId')]",
                 "numberOfWorkers": "[parameters('hostingPlanNumberOfWorkers')]",
-                "reserved": true
+                "reserved": false
             }
         }
     ],
