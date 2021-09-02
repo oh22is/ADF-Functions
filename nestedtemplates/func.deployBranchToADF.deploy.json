@@ -104,7 +104,7 @@
 
                     ],
                     "use32BitWorkerProcess": "[parameters('functionsUse32BitWorkerProcess')]",
-                    "linuxFxVersion": "PowerShell|7",
+                    "powerShellVersion": "~7",
                     "alwaysOn": "[parameters('functionsAlwaysOn')]"
                 }
             }
